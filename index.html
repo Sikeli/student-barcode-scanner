@@ -51,7 +51,7 @@
             Html5QrcodeSupportedFormats.CODE_128
           ]
         },
-        function(decodedText) {
+      function(decodedText) {
   document.getElementById("result").textContent = decodedText;
 
   scanner.stop().then(() => {
