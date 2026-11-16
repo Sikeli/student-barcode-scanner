@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Barcode Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 14px 22px;
+      font-size: 17px;
+      margin: 10px;
+    }
+    #reader {
+      width: 100%;
+      max-width: 450px;
+      margin: 15px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Student Barcode Scanner</h2>
+  <p>Tap the button and scan a student's barcode.</p>
+
+  <button onclick="startScanner()">Start Camera</button>
+  <div id="reader"></div>
+
+  <h3>Scanned Barcode</h3>
+  <p id="result">Waiting for scan...</p>
+
+  <button onclick="copyBarcode()">Copy Barcode</button>
+
+  <script>
+    let scanner;
+
+    function startScanner() {
+      scanner = new Html5Qrcode("reader");
+
+      scanner.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: { width: 300, height: 120 },
+          formatsToSupport: [
+            Html5QrcodeSupportedFormats.CODE_128
+          ]
+        },
+        function(decodedText) {
+          document.getElementById("result").textContent = decodedText;
+
+          scanner.stop();
+        }
+      ).catch(function(error) {
+        alert("Camera error: " + error);
+      });
+    }
+
+    function copyBarcode() {
+      const barcode = document.getElementById("result").textContent;
+
+      navigator.clipboard.writeText(barcode)
+        .then(() => alert("Barcode copied!"))
+        .catch(() => alert("Unable to copy barcode."));
+    }
+  </script>
+
+</body>
+</html>
