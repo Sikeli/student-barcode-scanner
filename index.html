@@ -52,10 +52,16 @@
           ]
         },
         function(decodedText) {
-          document.getElementById("result").textContent = decodedText;
+  document.getElementById("result").textContent = decodedText;
 
-          scanner.stop();
-        }
+  scanner.stop().then(() => {
+    const inventoryUrl =
+      "https://script.google.com/macros/s/AKfycbylobm_HSt6Eqqgkianw3BYR-Bokvq7PxGjvmV7Imgq_8Vs2Sq2LtCdhkj0Kt2Hc8lk/exec";
+
+    window.location.href =
+      inventoryUrl + "?barcode=" + encodeURIComponent(decodedText);
+  });
+}
       ).catch(function(error) {
         alert("Camera error: " + error);
       });
